@@ -97,32 +97,33 @@ int main(int argc, char *argv[])
             TEqn.solve();
             fvOptions.correct(T);
         }
+ scalar v=50;
 
-
-forAll (Source , i)
-{
- Source[i]=mesh.C()[i][0];
-//Info<<Source[i]<<endl;
-if
-(Source[i]-Source[i+1]<=0)
-{
-Source[i]=Source[i];
-Info<<Source[i+1]<<endl;
-}
+   forAll (Source , i)
+ {
+      scalar yi=mesh.C()[i][1];
+      scalar xi=mesh.C()[i][0];
+if (
+		max(fabs (2-(xi-v*runTime.value())),fabs (0.3-yi)/0.2)<=1
+	)
+      {
+        Source[i]=1;
+      }
 else
-{
-Source[i]=Source[i+1];
-}
-}
+      {
+        Source[i]=0;
+      }
 
-runTime.write();
-    }
+  }
+    runTime.write();
 
 
+  
     Info<< "End\n" << endl;
-
+  }
     return 0;
-}
 
+
+}
 
 // ************************************************************************* //
